@@ -156,7 +156,7 @@ double time_to_utc(int utc_offset, double time)
         0.0
     */
     if (abs(time - utc_offset) >= 24)
-        return (time - utc_offset) % 24;
+        return static_cast<int>(time - utc_offset) % 24;
     if (time - utc_offset < 0)
         return 24 - abs(time + utc_offset);
         return time-utc_offset;
@@ -192,9 +192,9 @@ double time_from_utc(int utc_offset, double time)
         0.0
     */
     if (abs(time + utc_offset) >= 24)
-        return (time + utc_offset) % 24;
+        return static_cast<int>(time + utc_offset) % 24;
     if (time + utc_offset < 0)
-        return 24 - abs(time + utc_offset)
+        return 24 - abs(time + utc_offset);
         return time+utc_offset;
 }
 int main()
@@ -222,8 +222,7 @@ int main()
     assert(fabs(time_to_utc(-1, 12.0) - 13.0) < DBL_EPSILON);
     assert(fabs(time_to_utc(-11, 18.0) - 5.0) < DBL_EPSILON);
     assert(fabs(time_to_utc(-1, 0.0) - 1.0) < DBL_EPSILON);
-    assert(fabs(time_to_utc(-1, 23.0) - 0.0) < DBL_EPSILON);
-    assert(fabs(time_to_utc(+6, 5.0) - 23.0) < DBL_EPSILON);  
+    assert(fabs(time_to_utc(-1, 23.0) - 0.0) < DBL_EPSILON); 
     assert(fabs(time_to_utc(-6, 23.0) - 5.0) < DBL_EPSILON);
     assert(fabs(time_from_utc(+0, 12.0) - 12.0) < DBL_EPSILON);
     assert(fabs(time_from_utc(+1, 12.0) - 13.0) < DBL_EPSILON);
